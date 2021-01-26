@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        userList = jdbcTemplate.query("SELECT id_user,name,surname,phone_number,email,password,balance FROM wypozyczalnia.rent_user WHERE id_user < 500", new RowMapper<User>() {
+        userList = jdbcTemplate.query("SELECT id_user,name,surname,phone_number,email,password,balance FROM wypozyczalnia.rent_user WHERE id_user>3500", new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet resultSet, int i) throws SQLException {
                 User user = new User();
