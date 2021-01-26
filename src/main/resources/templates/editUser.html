@@ -4,10 +4,64 @@
     <meta charset="UTF-8">
     <title>DB Interface</title>
 
-    <link th:rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link th:rel="stylesheet" th:href="@{/css/bootstrap.css}"/>
     <link th:rel="stylesheet" th:href="@{/css/styles.css}"/>
+    <link th:rel="stylesheet" th:href="@{/css/mdb.css}"/>
+    <link th:rel="stylesheet" th:href="@{/css/mdb.lite.css}"/>
+
 </head>
 <body>
-    <p th:text="${idUser}"/>
+<div class="container">
+    <header>
+
+        <nav class="navbar navbar-expand-lg navbar-dark default-color d-flex justify-content-between">
+            <strong class="navbar-brand me-auto p-2">Interfejs bazy danych Szymon Biliński</strong>
+            <div>
+                <a th:href="@{|/user/add|}"><button type="button" class="btn btn-info btn-rounded btn-sm">Add new user</button></a>
+                <a th:href="@{|/users|}"><button type="button" class="btn btn-primary btn-rounded btn-sm">Home</button></a>
+            </div>
+        </nav>
+
+    </header>
+    <form class="text-center border border-light p-5" th:action="@{|/user/edit/${oldPerson}|}" th:object="${idUser}" method="post">
+        <h2 style="margin-bottom: 40px">Edit user data</h2>
+        <!-- first name input -->
+        <div class="form-outline mb-4">
+            <input type="text" id="formFirstname" class="form-control" th:field="*{firstname}"/>
+            <label class="form-label" for="formFirstname">First name</label>
+        </div>
+
+        <!-- last name input -->
+        <div class="form-outline mb-4">
+            <input type="text" id="formLastName" class="form-control" th:field="*{lastname}"/>
+            <label class="form-label" for="formLastName">Last name</label>
+        </div>
+
+        <!-- email input -->
+        <div class="form-outline mb-4">
+            <input type="email" id="formEmail" class="form-control" th:field="*{email}"/>
+            <label class="form-label" for="formEmail">Email</label>
+        </div>
+
+        <!-- phone input -->
+        <div class="form-outline mb-4">
+            <input type="text" id="formPhone" class="form-control" th:field="*{phoneNumber}"/>
+            <label class="form-label" for="formPhone">Phone number</label>
+        </div>
+
+        <!-- password input -->
+        <div class="form-outline mb-4">
+            <input type="text" id="formPassword" class="form-control" th:field="*{password}"/>
+            <label class="form-label" for="formPassword">Password</label>
+        </div>
+
+        <!-- balance input -->
+        <div class="form-outline mb-4">
+            <input type="number" id="formBalance" class="form-control" th:field="*{balance}"/>
+            <label class="form-label" for="formBalance">Balance</label>
+        </div>
+        <p><input type="submit" class="btn btn-success" value="Edit"></p>
+    </form>
+</div>
 </body>
 </html>

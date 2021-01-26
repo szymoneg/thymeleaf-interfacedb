@@ -4,11 +4,10 @@ import com.szymonbilinski.thymeleafdb.domain.entity.User;
 import com.szymonbilinski.thymeleafdb.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.sql.SQLException;
+
 
 @Controller
 public class DataBaseRestController {
@@ -25,27 +24,41 @@ public class DataBaseRestController {
 
     @GetMapping("/users")
     public String getUsers(Model model){
-        User user1 = User.builder()
-                .id(1)
-                .firstname("Szymon")
-                .lastname("Biliński")
-                .build();
-        User user2 = User.builder()
-                .id(2)
-                .firstname("Przemek")
-                .lastname("Kuca")
-                .build();
-
-        List<User> userList = Arrays.asList(user1,user2);
-
-        model.addAttribute("users", userList);
+        model.addAttribute("users", userService.getAllUsers());
         return "users";
     }
 
     @GetMapping("/user/edit/{userId}")
-    public String getSingleUserData(@PathVariable("userId") int userId, Model model){
-        model.addAttribute("idUser",userId);
+    public String getSingleUserData(@PathVariable("userId") long userId, Model model){
+        model.addAttribute("idUser",userService.getUserById(userId));
+        model.addAttribute("oldPerson",userId);
+        model.addAttribute("newUser",new User());
         userService.getAllUsers();
         return "editUser";
+    }
+
+    @PostMapping("/user/edit/{userId}")
+    public String postEditUser(@PathVariable("userId") long userId, @ModelAttribute("idUser") User user){
+        System.out.println(user);
+        userService.editUser(user,userId);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/user/delete/{userId}")
+    public String deleteUser(@PathVariable("userId") long userId){
+        userService.deleteUser(userId);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/user/add")
+    public String addNewUserForm(Model model){
+        model.addAttribute("newUser",new User());
+        return "addForm";
+    }
+
+    @PostMapping("/user/add")
+    public String addNewUserSubmit(@ModelAttribute("newUser") User user) throws SQLException {
+        userService.addUser(user);
+        return "redirect:/users";
     }
 }
